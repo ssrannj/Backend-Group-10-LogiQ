@@ -57,108 +57,162 @@ const Checkout = () => {
     if (status === 'success') {
         return (
             <div className="auth-container">
-                <div className="auth-card text-center" style={{ maxWidth: '32rem' }}>
-                    <CheckCircle size={64} style={{ color: '#166534', margin: '0 auto 1.5rem' }} />
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Payment Sent!</h2>
-                    <p className="text-muted" style={{ marginBottom: '2rem' }}>
-                        Your payment slip has been uploaded successfully. Our finance team will verify the transfer and update your order status within 24 hours.
+                <div className="auth-card text-center card-hover" style={{ maxWidth: '32rem', padding: '3rem' }}>
+                    <div className="gradient-bg" style={{
+                        width: '80px',
+                        height: '80px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 1.5rem',
+                        boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.3)'
+                    }}>
+                        <CheckCircle size={40} color="white" />
+                    </div>
+                    <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem', color: 'var(--text-main)' }}>Payment Submitted!</h2>
+                    <p className="text-muted" style={{ marginBottom: '2.5rem', fontSize: '1.1rem' }}>
+                        Your payment slip has been uploaded successfully for Order <strong>#{orderData.id}</strong>.
+                        Verification usually takes less than 24 hours.
                     </p>
-                    <Link to="/customer/dashboard" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
-                        Back to Dashboard
-                    </Link>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                        <Link to="/customer/dashboard" className="btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', textDecoration: 'none' }}>
+                            View Dashboard
+                        </Link>
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="dashboard-container">
+        <div className="dashboard-container" style={{ animation: 'slideUp 0.5s ease-out' }}>
             <div className="header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <Link to="/customer/dashboard" style={{ color: 'var(--text-muted)' }}>
-                        <ArrowLeft size={24} />
+                    <Link to="/customer/dashboard" className="btn-secondary" style={{ padding: '0.5rem', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
+                        <ArrowLeft size={20} />
                     </Link>
                     <div>
-                        <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold' }}>Secure Checkout</h1>
-                        <p className="text-muted">Order ID: {orderData.id}</p>
+                        <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Checkout</h1>
+                        <p className="text-muted">Complete your purchase for order #{orderData.id}</p>
                     </div>
                 </div>
                 <button className="btn-secondary" onClick={handleLogout}>Logout</button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem', alignItems: 'start' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr)', gap: '2rem', alignItems: 'start' }}>
                 {/* Left Side: Payment Upload */}
                 <div>
-                    <div className="auth-card" style={{ maxWidth: '100%', marginBottom: '1.5rem' }}>
-                        <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Upload size={20} /> Bank Transfer Upload
+                    <div className="auth-card card-hover" style={{ maxWidth: '100%', marginBottom: '1.5rem' }}>
+                        <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.25rem' }}>
+                            <Upload size={24} style={{ color: 'var(--primary)' }} /> Bank Transfer Details
                         </h3>
 
-                        <div style={{ padding: '1rem', backgroundColor: '#f0f9ff', borderRadius: '0.5rem', marginBottom: '1.5rem', border: '1px solid #bae6fd' }}>
-                            <h4 style={{ color: '#0369a1', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                <Info size={16} /> Instructions
+                        <div style={{
+                            padding: '1.5rem',
+                            background: 'linear-gradient(to right, #f8fafc, #f1f5f9)',
+                            borderRadius: '1rem',
+                            marginBottom: '2rem',
+                            border: '1px solid #e2e8f0',
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}>
+                            <div style={{ position: 'absolute', right: '-10px', top: '-10px', opacity: 0.05 }}>
+                                <Info size={100} />
+                            </div>
+                            <h4 style={{ color: 'var(--text-main)', fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600' }}>
+                                <Info size={18} className="text-primary" /> Transfer Instructions
                             </h4>
-                            <ul style={{ fontSize: '0.85rem', color: '#0c4a6e', paddingLeft: '1.2rem' }}>
-                                <li>Transfer the total amount to <strong>LogiQ Bank (Account: 1234-5678-9012)</strong>.</li>
-                                <li>Capture a clear photo or screenshot of the transfer receipt.</li>
-                                <li>Upload the file below (PDF, JPG, or PNG).</li>
-                            </ul>
+                            <div style={{ display: 'grid', gap: '0.75rem', fontSize: '0.95rem', color: '#475569' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: 'white', borderRadius: '0.5rem', border: '1px solid #f1f5f9' }}>
+                                    <span>Bank Name:</span>
+                                    <strong style={{ color: 'var(--text-main)' }}>LogiQ Bank</strong>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: 'white', borderRadius: '0.5rem', border: '1px solid #f1f5f9' }}>
+                                    <span>Account Number:</span>
+                                    <strong style={{ color: 'var(--text-main)' }}>1234-5678-9012</strong>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', backgroundColor: 'white', borderRadius: '0.5rem', border: '1px solid #f1f5f9' }}>
+                                    <span>Swift/BIC:</span>
+                                    <strong style={{ color: 'var(--text-main)' }}>LOGIQBANKXXX</strong>
+                                </div>
+                            </div>
+                            <p style={{ marginTop: '1rem', fontSize: '0.85rem', fontStyle: 'italic', opacity: 0.8 }}>
+                                * Please include your Order ID #{orderData.id} as the transfer reference.
+                            </p>
                         </div>
 
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label className="form-label">Upload Payment Slip</label>
+                                <label className="form-label">Payment Proof (Screenshot / Receipt)</label>
                                 <div style={{
-                                    border: '2px dashed var(--border)',
-                                    padding: '2rem',
-                                    borderRadius: '0.75rem',
+                                    border: file ? '2px solid var(--primary)' : '2px dashed var(--border)',
+                                    padding: '3rem 2rem',
+                                    borderRadius: '1rem',
                                     textAlign: 'center',
-                                    backgroundColor: '#fafafa',
-                                    cursor: 'pointer',
-                                    position: 'relative'
-                                }}>
+                                    backgroundColor: file ? '#f0f7ff' : '#f8fafc',
+                                    transition: 'all 0.3s ease',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}
+                                    className="card-hover">
                                     <input
                                         type="file"
                                         onChange={handleFileChange}
-                                        style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
+                                        style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer', zIndex: 10 }}
                                         accept=".pdf,.jpg,.jpeg,.png"
                                     />
                                     {file ? (
-                                        <div>
-                                            <CheckCircle size={32} style={{ color: '#166534', marginBottom: '0.5rem' }} />
-                                            <p style={{ fontWeight: '500' }}>{file.name}</p>
-                                            <p className="text-muted" style={{ fontSize: '0.8rem' }}>{(file.size / 1024).toFixed(1)} KB - Click to change</p>
+                                        <div style={{ animation: 'slideUp 0.3s ease-out' }}>
+                                            <div className="badge badge-success" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', marginBottom: '1rem' }}>
+                                                <CheckCircle size={16} /> Selected
+                                            </div>
+                                            <p style={{ fontWeight: 'bold', fontSize: '1.1rem', color: 'var(--text-main)' }}>{file.name}</p>
+                                            <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>{(file.size / 1024).toFixed(1)} KB • Click to replace</p>
                                         </div>
                                     ) : (
-                                        <div>
-                                            <Upload size={32} className="text-muted" style={{ marginBottom: '0.5rem' }} />
-                                            <p>Click or drag to upload receipt</p>
-                                            <p className="text-muted" style={{ fontSize: '0.8rem' }}>PDF, JPG, PNG up to 5MB</p>
+                                        <div style={{ opacity: 0.7 }}>
+                                            <Upload size={48} style={{ color: 'var(--primary)', marginBottom: '1rem', opacity: 0.8 }} />
+                                            <p style={{ fontWeight: '600', fontSize: '1.1rem', color: 'var(--text-main)' }}>Click or drag receipt here</p>
+                                            <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Supports PDF, JPG, PNG up to 10MB</p>
                                         </div>
                                     )}
                                 </div>
                             </div>
 
-                            {status === 'error' && (
-                                <div className="form-error" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                                    <AlertCircle size={18} /> {errorMessage}
+                            {(status === 'error' || errorMessage) && (
+                                <div className="form-error" style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    marginBottom: '1.5rem',
+                                    padding: '1rem',
+                                    backgroundColor: '#fff1f2',
+                                    borderRadius: '0.75rem',
+                                    border: '1px solid #fda4af'
+                                }}>
+                                    <AlertCircle size={20} />
+                                    <span>{errorMessage || 'An error occurred during upload.'}</span>
                                 </div>
-                            )}
-
-                            {errorMessage && !status === 'error' && (
-                                <div className="form-error" style={{ marginBottom: '1rem' }}>{errorMessage}</div>
                             )}
 
                             <button
                                 type="submit"
                                 className="btn-primary"
                                 disabled={status === 'uploading'}
-                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
+                                style={{
+                                    height: '3.5rem',
+                                    fontSize: '1.1rem',
+                                    boxShadow: '0 4px 6px -1px rgba(59, 130, 246, 0.5)'
+                                }}
                             >
                                 {status === 'uploading' ? (
-                                    <> <Loader2 size={18} className="animate-spin" /> Uploading Receipt... </>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <Loader2 size={24} className="animate-spin" />
+                                        Uploading Payment Proof...
+                                    </div>
                                 ) : (
-                                    'Submit Payment Slip'
+                                    'Complete Checkout'
                                 )}
                             </button>
                         </form>
@@ -166,20 +220,53 @@ const Checkout = () => {
                 </div>
 
                 {/* Right Side: Summary */}
-                <div className="auth-card" style={{ maxWidth: '100%', backgroundColor: '#fcfcfc' }}>
-                    <h3 style={{ marginBottom: '1rem' }}>Order Summary</h3>
-                    <div style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
+                <div className="auth-card card-hover" style={{ maxWidth: '100%', border: '1px solid var(--border)', position: 'sticky', top: '2rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                        <div style={{ backgroundColor: '#f1f5f9', padding: '0.5rem', borderRadius: '0.5rem' }}>
+                            <Info size={20} />
+                        </div>
+                        <h3 style={{ margin: 0, fontSize: '1.25rem' }}>Order Summary</h3>
+                    </div>
+
+                    <div style={{ display: 'grid', gap: '1rem', paddingBottom: '1.5rem', borderBottom: '2px dashed #f1f5f9' }}>
                         {orderData.items.map((item, idx) => (
-                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
-                                <span>{item.name} x{item.count}</span>
-                                <span style={{ fontWeight: '500' }}>${item.price * item.count}</span>
+                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <span style={{ fontWeight: '600', color: 'var(--text-main)' }}>{item.name}</span>
+                                    <span className="text-muted" style={{ fontSize: '0.85rem' }}>Qty: {item.count}</span>
+                                </div>
+                                <span style={{ fontWeight: 'bold' }}>${(item.price * item.count).toLocaleString()}</span>
                             </div>
                         ))}
                     </div>
-                    <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: 'bold' }}>
-                        <span>Total Due</span>
-                        <span style={{ color: 'var(--primary)' }}>${orderData.total}</span>
+
+                    <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                            <span className="text-muted">Subtotal</span>
+                            <span>${orderData.total.toLocaleString()}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <span className="text-muted">Tax (0%)</span>
+                            <span>$0.00</span>
+                        </div>
+
+                        <div className="gradient-bg" style={{
+                            padding: '1.25rem',
+                            borderRadius: '1rem',
+                            color: 'white',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.3)'
+                        }}>
+                            <span style={{ fontWeight: '500', opacity: 0.9 }}>Total Amount</span>
+                            <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${orderData.total.toLocaleString()}</span>
+                        </div>
                     </div>
+
+                    <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1.5rem' }}>
+                        All payments are processed securely.
+                    </p>
                 </div>
             </div>
         </div>
