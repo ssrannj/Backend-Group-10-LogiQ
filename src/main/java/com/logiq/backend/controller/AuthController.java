@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
         AuthResponse response = authService.register(registerRequest);
-        if (response.getMessage().startsWith("FAILURE")) {
+        if (response.getMessage() != null && response.getMessage().startsWith("FAILURE")) {
             return ResponseEntity.badRequest().body(response);
         }
         return ResponseEntity.ok(response);
@@ -30,7 +30,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
         AuthResponse response = authService.login(loginRequest);
-        if (response.getMessage().startsWith("FAILURE")) {
+        if (response.getMessage() != null && response.getMessage().startsWith("FAILURE")) {
             return ResponseEntity.status(401).body(response);
         }
         return ResponseEntity.ok(response);

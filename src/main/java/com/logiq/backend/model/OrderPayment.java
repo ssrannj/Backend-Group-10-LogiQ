@@ -32,9 +32,3 @@ public class OrderPayment {
 
     private LocalDateTime uploadTime;
 }
-
-enum PaymentStatus {
-    VERIFYING_ORDER,
-    VERIFIED,
-    REJECTED
-}

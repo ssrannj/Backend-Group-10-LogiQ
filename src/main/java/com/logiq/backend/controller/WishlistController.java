@@ -1,31 +1,25 @@
 package com.logiq.backend.controller;
 
 import com.logiq.backend.dto.WishlistResponse;
-import com.logiq.backend.model.Product;
 import com.logiq.backend.model.User;
-import com.logiq.backend.model.WishlistItem;
-import com.logiq.backend.repository.ProductRepository;
 import com.logiq.backend.repository.UserRepository;
-import com.logiq.backend.repository.WishlistRepository;
+import com.logiq.backend.service.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/wishlist")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class WishlistController {
 
-    private final WishlistRepository wishlistRepository;
-    private final ProductRepository productRepository;
+    private final WishlistService wishlistService;
     private final UserRepository userRepository;
 
-    // Temporary method to get current user until full auth wiring is verified
     private User getCurrentUser() {
-        // For development/test, we'll pick the first user or return null
         return userRepository.findAll().stream().findFirst().orElse(null);
     }
 
@@ -34,20 +28,7 @@ public class WishlistController {
         User user = getCurrentUser();
         if (user == null) return ResponseEntity.status(401).build();
 
-        List<WishlistResponse> wishlist = wishlistRepository.findByUser(user).stream()
-                .map(item -> WishlistResponse.builder()
-                        .id(item.getId())
-                        .productId(item.getProduct().getId())
-                        .productName(item.getProduct().getName())
-                        .productDescription(item.getProduct().getDescription())
-                        .price(item.getProduct().getPrice())
-                        .imageUrl(item.getProduct().getImageUrl())
-                        .category(item.getProduct().getCategory())
-                        .inStock(item.getProduct().isInStock())
-                        .build())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(wishlist);
+        return ResponseEntity.ok(wishlistService.getUserWishlist(user));
     }
 
     @PostMapping
@@ -55,20 +36,12 @@ public class WishlistController {
         User user = getCurrentUser();
         if (user == null) return ResponseEntity.status(401).body("User not authenticated");
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        if (wishlistRepository.findByUserAndProduct(user, product).isPresent()) {
-            return ResponseEntity.badRequest().body("Product already in wishlist");
+        try {
+            wishlistService.addToWishlist(user, productId);
+            return ResponseEntity.ok("Added to wishlist");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        WishlistItem item = WishlistItem.builder()
-                .user(user)
-                .product(product)
-                .build();
-        
-        wishlistRepository.save(item);
-        return ResponseEntity.ok("Added to wishlist");
     }
 
     @DeleteMapping("/{id}")
@@ -76,14 +49,11 @@ public class WishlistController {
         User user = getCurrentUser();
         if (user == null) return ResponseEntity.status(401).build();
 
-        WishlistItem item = wishlistRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Wishlist item not found"));
-
-        if (!item.getUser().getId().equals(user.getId())) {
-            return ResponseEntity.status(403).body("Not authorized to remove this item");
+        try {
+            wishlistService.removeFromWishlist(user, id);
+            return ResponseEntity.ok("Removed from wishlist");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
         }
-
-        wishlistRepository.delete(item);
-        return ResponseEntity.ok("Removed from wishlist");
     }
 }
