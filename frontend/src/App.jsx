@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CustomerDashboard from './pages/CustomerDashboard';
 import Wishlist from './pages/Wishlist';
+import Checkout from './pages/Checkout';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminOrders from './pages/AdminOrders';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -20,6 +21,7 @@ function App() {
                     <Route element={<ProtectedRoute requiredRole="CUSTOMER" />}>
                         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
                         <Route path="/customer/wishlist" element={<Wishlist />} />
+                        <Route path="/customer/checkout" element={<Checkout />} />
                     </Route>
 
                     <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
