@@ -13,6 +13,7 @@ const Register = () => {
     });
 
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -47,12 +48,20 @@ const Register = () => {
         }
 
         setIsLoading(true);
+        setSuccess('');
         try {
-            const userData = await authService.register(formData);
-            login(userData);
+            const payload = {
+                fullName,
+                email,
+                password,
+                role: formData.role
+            };
+            await authService.register(payload);
 
-            // Redirect based on role
-            navigate('/customer/dashboard');
+            setSuccess('Registration successful! Redirecting to login...');
+            setTimeout(() => {
+                navigate('/login');
+            }, 2000);
         } catch (err) {
             setError(err.message || 'Failed to register');
         } finally {
@@ -68,6 +77,7 @@ const Register = () => {
                 </h2>
 
                 {error && <div className="form-error text-center mb-6" style={{ background: '#fee2e2', padding: '0.5rem', borderRadius: '0.5rem' }}>{error}</div>}
+                {success && <div className="form-success text-center mb-6" style={{ background: '#dcfce3', color: '#166534', padding: '0.5rem', borderRadius: '0.5rem' }}>{success}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">

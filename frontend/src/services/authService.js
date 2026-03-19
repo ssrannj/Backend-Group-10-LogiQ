@@ -1,49 +1,23 @@
-// A temporary fake authentication service
-// Easy to replace with real API calls using fetch or axios
+import axios from 'axios';
+
+const API_URL = 'http://localhost:8080/api/auth';
 
 export const authService = {
     login: async (email, password) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (email === 'admin@logiq.com' && password === 'admin123') {
-                    resolve({
-                        id: 1,
-                        fullName: 'Admin User',
-                        email: 'admin@logiq.com',
-                        role: 'ADMIN',
-                        token: 'mock-jwt-token-admin'
-                    });
-                } else if (email === 'customer@logiq.com' && password === 'customer123') {
-                    resolve({
-                        id: 2,
-                        fullName: 'Regular Customer',
-                        email: 'customer@logiq.com',
-                        role: 'CUSTOMER',
-                        token: 'mock-jwt-token-customer'
-                    });
-                } else {
-                    reject(new Error('Invalid email or password'));
-                }
-            }, 800);
-        });
+        try {
+            const response = await axios.post(`${API_URL}/login`, { email, password });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to login');
+        }
     },
 
     register: async (userData) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                // Mock successful registration
-                if (!userData.email || !userData.password) {
-                    reject(new Error('Missing required fields'));
-                } else {
-                    resolve({
-                        id: Math.floor(Math.random() * 1000) + 3,
-                        fullName: userData.fullName,
-                        email: userData.email,
-                        role: userData.role || 'CUSTOMER',
-                        token: `mock-jwt-token-new-${Date.now()}`
-                    });
-                }
-            }, 800);
-        });
+        try {
+            const response = await axios.post(`${API_URL}/register`, userData);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Failed to register');
+        }
     }
 };
