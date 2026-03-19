@@ -3,9 +3,11 @@ package com.logiq.backend.controller;
 import com.logiq.backend.model.User;
 import com.logiq.backend.repository.UserRepository;
 import com.logiq.backend.util.JwtUtil;
+import com.logiq.backend.dto.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,39 +18,37 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // The BCrypt tool we made in SecurityConfig
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public String register(@RequestBody User newUser) {
+    public ResponseEntity<AuthResponse> register(@RequestBody User newUser) {
         if (userRepository.findByEmail(newUser.getEmail()) != null) {
-            return "FAILURE: Email is already registered!";
+            return ResponseEntity.badRequest()
+                    .body(new AuthResponse(null, null, null, null, "Email is already registered!"));
         }
 
         if (newUser.getRole() == null) {
             newUser.setRole("CUSTOMER");
         }
 
-        // SCRAMBLE THE PASSWORD BEFORE SAVING
         String hashedPassword = passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(hashedPassword);
 
         userRepository.save(newUser);
-        return "SUCCESS: Account created! You can now log in.";
+        return ResponseEntity.ok(new AuthResponse(null, newUser.getEmail(), newUser.getRole(), newUser.getFullName(),
+                "Account created successfully!"));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User loginRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody User loginRequest) {
         User dbUser = userRepository.findByEmail(loginRequest.getEmail());
 
-        // CHECK IF PASSWORD MATCHES THE HASH
         if (dbUser != null && passwordEncoder.matches(loginRequest.getPassword(), dbUser.getPassword())) {
-
-            // GENERATE THE JWT TOKEN
             String token = JwtUtil.generateToken(dbUser.getEmail(), dbUser.getRole());
-
-            return "SUCCESS: " + token;
+            return ResponseEntity.ok(new AuthResponse(token, dbUser.getEmail(), dbUser.getRole(), dbUser.getFullName(),
+                    "Login successful!"));
         } else {
-            return "FAILURE: Invalid Credentials";
+            return ResponseEntity.status(401).body(new AuthResponse(null, null, null, null, "Invalid Credentials"));
         }
     }
 }
