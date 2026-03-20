@@ -1,9 +1,9 @@
 Test ID,Module,Scenario,Preconditions,Steps,"Expected Result","Actual Result",Status,Severity
 WISH-001,Wishlist,Successful Add to Wishlist,User is logged in,"1. Navigate to a product page \n 2. Click on 'Add to Wishlist' button","Success message displayed; Item appears in wishlist",,Pending,High
 WISH-002,Wishlist,Add Duplicate Item,Item already in wishlist,"1. Navigate to a product page of an item already in wishlist \n 2. Click on 'Add to Wishlist' button","System prevents duplicate entry; shows 'Already in wishlist' message",,Pending,Medium
-WISH-003,Wishlist,View Wishlist Page,Wishlist contains items,"1. Click on Wishlist icon/link in header","All added items are displayed with correct details",,Pending,Medium
-WISH-004,Wishlist,Remove Item from Wishlist,Wishlist contains items,"1. Navigate to wishlist page \n 2. Click 'Remove' on an item","Item is removed from list; Success message displayed",,Pending,Medium
-WISH-005,Wishlist,Guest User Add Attempt,User is not logged in,"1. Navigate to a product page \n 2. Click on 'Add to Wishlist' button","User is redirected to Login page or prompted to sign in",,Pending,High
-WISH-006,Wishlist,Guest User View Attempt,User is not logged in,"1. Attempt to navigate directly to /wishlist URL","User is redirected to Login page",,Pending,High
-WISH-007,Wishlist,Clear Entire Wishlist,Wishlist contains multiple items,"1. Navigate to wishlist \n 2. Click 'Clear All' button (if available) or remove all manually","Wishlist displays 'Empty' state message",,Pending,Low
-WISH-008,Wishlist,Add Item with Zero Stock,Item is out of stock,"1. Navigate to an out-of-stock product page \n 2. Click 'Add to Wishlist'","Item is successfully added to wishlist for future tracking",,Pending,Low
+WISH-003,Wishlist,View Wishlist Page,Wishlist contains items,"1. Click on Wishlist icon/link in header","All added items are displayed with correct details",Page loads with card view,PASSED,Medium
+WISH-004,Wishlist,Remove Item from Wishlist,Wishlist contains items,"1. Navigate to wishlist page \n 2. Click 'Remove' on an item","Item is removed from list; Success message displayed",Deleted via API,PASSED,Medium
+WISH-005,Wishlist,Guest User Add Attempt,User is not logged in,"1. Navigate to a product page \n 2. Click on 'Add to Wishlist' button","User is redirected to Login page or prompted to sign in",Redirected to login,PASSED,High
+WISH-006,Wishlist,Guest User View Attempt,User is not logged in,"1. Attempt to navigate directly to /wishlist URL","User is redirected to Login page",Redirected to login,PASSED,High
+WISH-007,Wishlist,Clear Entire Wishlist,Wishlist contains multiple items,"1. Navigate to wishlist \n 2. Click 'Clear All' button (if available) or remove all manually","Wishlist displays 'Empty' state message",Not implemented,Pending,Low
+WISH-008,Wishlist,Add Item with Zero Stock,Item is out of stock,"1. Navigate to an out-of-stock product page \n 2. Click 'Add to Wishlist'","Item is successfully added to wishlist for future tracking",Backend supports it; badge shown,PASSED,Low

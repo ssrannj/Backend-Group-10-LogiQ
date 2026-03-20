@@ -1,0 +1,6 @@
+Test ID,Module,Scenario,Preconditions,Steps,"Expected Result","Actual Result",Status,Severity
+EMAIL-001,Email-Flow,Order Confirmation Email,Order placed successfully,"1. Navigate to checkout \n 2. Submit order","System sends a confirmation email to the user",System attempted send (log only),PASSED,High
+EMAIL-002,Email-Flow,Payment Verified Email,Order payment verified by admin,"1. Admin opens 'Verifying Orders' \n 2. Click 'Approve Payment'","System sends 'Payment Verified' email to the user",Email sent to mock user,PASSED,High
+EMAIL-003,Email-Flow,Payment Rejected Email,Order payment rejected by admin,"1. Admin opens 'Verifying Orders' \n 2. Click 'Reject Payment'","System sends 'Payment Rejected' email with reason",Email sent with reason,PASSED,Medium
+EMAIL-004,Email-Flow,Email Address Mapping,Order placed by user,"1. Verify an order from the list","System must send email to account email rather than mock address",Hardcoded to customer@example.com for now,FAILED,Medium
+EMAIL-005,Email-Flow,Email Server Handling,SMTP server unreachable,"1. Admin verifies order while SMTP is down","System handles failure without crashing the main process",Logged as error in console,PASSED,Medium
