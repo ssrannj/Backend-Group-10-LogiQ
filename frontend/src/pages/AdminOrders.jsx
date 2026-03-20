@@ -34,11 +34,21 @@ const AdminOrders = () => {
         }
     };
 
+    const [successMessage, setSuccessMessage] = useState('');
+
+    useEffect(() => {
+        if (successMessage) {
+            const timer = setTimeout(() => setSuccessMessage(''), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [successMessage]);
+
     const handleVerify = async (orderId, status) => {
         setActionLoading(orderId);
         try {
             await adminService.verifyPayment(orderId, status);
             setOrders(orders.filter(order => order.id !== orderId));
+            setSuccessMessage(`Order #${orderId} ${status === 'APPROVED' ? 'approved' : 'rejected'} successfully.`);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -69,39 +79,59 @@ const AdminOrders = () => {
                 </div>
             </div>
 
+            {successMessage && (
+                <div style={{
+                    backgroundColor: '#f0fdf4',
+                    border: '1px solid #bbf7d0',
+                    color: '#166534',
+                    padding: '1.25rem',
+                    borderRadius: '1rem',
+                    marginBottom: '2rem',
+                    animation: 'slideInRight 0.3s ease-out',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    boxShadow: '0 4px 6px -1px rgba(16, 185, 129, 0.1)'
+                }}>
+                    <CheckCircle size={20} />
+                    <strong>Success:</strong> {successMessage}
+                </div>
+            )}
+
             {error && (
-                <div className="form-error" style={{ marginBottom: '1.5rem', padding: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <AlertCircle size={20} /> {error}
+                <div className="form-error" style={{ marginBottom: '2rem', padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRadius: '1rem' }}>
+                    <XCircle size={20} /> {error}
                 </div>
             )}
 
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '8rem' }}>
-                    <Loader2 size={56} className="animate-spin" style={{ color: 'var(--primary)', margin: '0 auto' }} />
-                    <p className="text-muted mt-4">Retrieving pending orders...</p>
+                <div style={{ textAlign: 'center', padding: '10rem 0' }}>
+                    <Loader2 size={64} className="animate-spin" style={{ color: 'var(--primary)', margin: '0 auto' }} />
+                    <p className="text-muted mt-6" style={{ fontSize: '1.1rem' }}>Retrieving pending transactions...</p>
                 </div>
             ) : orders.length === 0 ? (
-                <div className="auth-card card-hover" style={{ textAlign: 'center', padding: '5rem', maxWidth: '100%' }}>
+                <div className="auth-card card-hover" style={{ textAlign: 'center', padding: '6rem 4rem', maxWidth: '100%', border: '2px dashed #bbf7d0', backgroundColor: '#f0fdf4' }}>
                     <div style={{
-                        width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#f0fdf4', color: '#10b981',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem'
+                        width: '100px', height: '100px', borderRadius: '50%', backgroundColor: 'white', color: '#10b981',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2.5rem',
+                        boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.1)'
                     }}>
-                        <CheckCircle size={40} />
+                        <CheckCircle size={56} />
                     </div>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>All Caught Up!</h2>
-                    <p className="text-muted">There are no pending payments requiring verification at this time.</p>
+                    <h2 style={{ fontSize: '2.25rem', fontWeight: 'bold', marginBottom: '1rem', color: '#065f46' }}>Perfect Harmony!</h2>
+                    <p className="text-muted" style={{ fontSize: '1.1rem' }}>All pending payments have been verified. The queue is currently empty.</p>
                 </div>
             ) : (
-                <div className="auth-card card-hover" style={{ maxWidth: '100%', overflow: 'hidden', padding: 0, border: '1px solid var(--border)' }}>
+                <div className="auth-card card-hover" style={{ maxWidth: '100%', overflow: 'hidden', padding: 0, border: '1px solid var(--border)', borderRadius: '1.25rem' }}>
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                             <thead>
-                                <tr style={{ backgroundColor: '#f8fafc', borderBottom: '2px solid var(--border)' }}>
-                                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '700', fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Order ID</th>
-                                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '700', fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Customer</th>
-                                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '700', fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Amount Due</th>
-                                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '700', fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Proof of Payment</th>
-                                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '700', fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'right' }}>Actions</th>
+                                <tr style={{ backgroundColor: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                                    <th style={{ padding: '1.5rem', fontWeight: '800', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Transaction ID</th>
+                                    <th style={{ padding: '1.5rem', fontWeight: '800', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Customer Entity</th>
+                                    <th style={{ padding: '1.5rem', fontWeight: '800', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Net Amount</th>
+                                    <th style={{ padding: '1.5rem', fontWeight: '800', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Verification Proof</th>
+                                    <th style={{ padding: '1.5rem', fontWeight: '800', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'right' }}>Authorization</th>
                                 </tr>
                             </thead>
                             <tbody>

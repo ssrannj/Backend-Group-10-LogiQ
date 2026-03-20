@@ -25,63 +25,99 @@ const Warranties = () => {
     return (
         <div className="dashboard-container" style={{ animation: 'slideUp 0.5s ease-out' }}>
             <div className="header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <Link to="/customer/dashboard" className="btn-secondary" style={{ padding: '0.5rem', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
-                        <ArrowLeft size={20} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                    <Link to="/customer/dashboard" className="btn-secondary" style={{ padding: '0.6rem', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
+                        <ArrowLeft size={22} />
                     </Link>
                     <div>
-                        <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold' }}>My Warranties</h1>
-                        <p className="text-muted">Manage your product protection plans</p>
+                        <h1 style={{ fontSize: '2.25rem', fontWeight: 'bold', letterSpacing: '-0.025em' }}>My Warranties</h1>
+                        <p className="text-muted">Manage protection plans for your LogiQ products</p>
                     </div>
                 </div>
             </div>
 
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '5rem' }}>
-                    <p className="text-muted">Loading warranty records...</p>
+                <div style={{ textAlign: 'center', padding: '8rem 0' }}>
+                    <div style={{ width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1.5rem' }}></div>
+                    <p className="text-muted" style={{ fontSize: '1.1rem' }}>Securing your warranty records...</p>
+                </div>
+            ) : warranties.length === 0 ? (
+                <div className="auth-card" style={{ textAlign: 'center', padding: '5rem', maxWidth: '100%', border: '1px solid var(--border)' }}>
+                     <ShieldCheck size={64} className="text-muted" style={{ margin: '0 auto 1.5rem', opacity: 0.3 }} />
+                     <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>No Active Warranties</h2>
+                     <p className="text-muted">You don't have any products with registered warranties yet.</p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: '2rem' }}>
                     {warranties.map((warranty) => (
-                        <div key={warranty.id} className="auth-card card-hover" style={{ maxWidth: '100%', marginBottom: 0, padding: '1.5rem', border: `1px solid ${isExpired(warranty.status) ? '#fecaca' : 'var(--border)'}` }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                                    <div style={{ padding: '0.5rem', backgroundColor: isExpired(warranty.status) ? '#fee2e2' : '#f0f9ff', borderRadius: '0.5rem' }}>
-                                        <ShieldCheck size={20} style={{ color: isExpired(warranty.status) ? '#ef4444' : 'var(--primary)' }} />
+                        <div key={warranty.id} className="auth-card card-hover" style={{ 
+                            maxWidth: '100%', 
+                            marginBottom: 0, 
+                            padding: '2rem', 
+                            border: `1px solid ${isExpired(warranty.status) ? '#fee2e2' : 'var(--border)'}`,
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                    <div style={{ 
+                                        padding: '0.75rem', 
+                                        backgroundColor: isExpired(warranty.status) ? '#fff1f2' : '#f0f9ff', 
+                                        borderRadius: '0.75rem',
+                                        boxShadow: `0 4px 6px -1px ${isExpired(warranty.status) ? 'rgba(239, 68, 68, 0.1)' : 'rgba(59, 130, 246, 0.1)'}`
+                                    }}>
+                                        <ShieldCheck size={24} style={{ color: isExpired(warranty.status) ? '#ef4444' : 'var(--primary)' }} />
                                     </div>
-                                    <h3 style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{warranty.product}</h3>
+                                    <h3 style={{ fontWeight: '700', fontSize: '1.25rem', color: 'var(--text-main)' }}>{warranty.product}</h3>
                                 </div>
-                                <span className={`badge ${isExpired(warranty.status) ? 'badge-error' : 'badge-success'}`}>
+                                <span className={`badge ${isExpired(warranty.status) ? 'badge-error' : 'badge-success'}`} style={{ padding: '0.4rem 0.8rem', fontWeight: '700' }}>
                                     {warranty.status}
                                 </span>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.5rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', margin: '2rem 0', padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '1rem' }}>
                                 <div>
-                                    <p className="text-muted" style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                        <Calendar size={12} /> Purchase Date
+                                    <p className="text-muted" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                                        <Calendar size={14} /> Registered On
                                     </p>
-                                    <p style={{ fontWeight: '600', fontSize: '0.875rem' }}>{warranty.purchaseDate}</p>
+                                    <p style={{ fontWeight: '700', fontSize: '1rem' }}>{warranty.purchaseDate}</p>
                                 </div>
                                 <div>
-                                    <p className="text-muted" style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                        <Clock size={12} /> Warranty Period
+                                    <p className="text-muted" style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                                        <Clock size={14} /> Duration
                                     </p>
-                                    <p style={{ fontWeight: '600', fontSize: '0.875rem' }}>{warranty.period}</p>
+                                    <p style={{ fontWeight: '700', fontSize: '1rem' }}>{warranty.period}</p>
                                 </div>
                             </div>
 
-                            <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: isExpired(warranty.status) ? '#fff1f2' : '#f0f9ff', borderRadius: '0.5rem', border: `1px solid ${isExpired(warranty.status) ? '#fecaca' : '#e0f2fe'}` }}>
-                                <p style={{ fontSize: '0.8rem', color: isExpired(warranty.status) ? '#e11d48' : '#0369a1', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500' }}>
-                                    <AlertCircle size={14} />
-                                    {isExpired(warranty.status) ? 'This warranty policy has expired. Click "Extend" to continue protection.' : 'Standard LogiQ coverage is fully active for all structural components.'}
+                            <div style={{ 
+                                padding: '1rem', 
+                                backgroundColor: isExpired(warranty.status) ? '#fff1f2' : '#eff6ff', 
+                                borderRadius: '0.75rem', 
+                                border: `1px solid ${isExpired(warranty.status) ? '#fecaca' : '#dbeafe'}` 
+                            }}>
+                                <p style={{ fontSize: '0.85rem', color: isExpired(warranty.status) ? '#e11d48' : '#1e40af', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', lineHeight: '1.5' }}>
+                                    <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '1px' }} />
+                                    <span>
+                                        {isExpired(warranty.status) 
+                                            ? 'Coverage has ended. You can still apply for a one-time extension within 30 days.' 
+                                            : 'Standard LogiQ protection is active. This covers all structural issues and manufacturing defects.'}
+                                    </span>
                                 </p>
                             </div>
 
-                            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-                                <button className="btn-secondary" style={{ flex: 1, fontSize: '0.85rem' }}>Claim Service</button>
-                                <button className="btn-primary" style={{ flex: 1, fontSize: '0.85rem', visibility: isExpired(warranty.status) ? 'visible' : 'hidden' }}>Extend Warranty</button>
+                            <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
+                                <button className="btn-secondary" style={{ flex: 1, fontSize: '0.9rem', fontWeight: '600' }}>Claim Support</button>
+                                {isExpired(warranty.status) && (
+                                    <button className="btn-primary" style={{ flex: 1, fontSize: '0.9rem', fontWeight: '600', boxShadow: '0 4px 6px -1px rgba(59, 130, 246, 0.3)' }}>
+                                        Extend Plan
+                                    </button>
+                                )}
                             </div>
+                            
+                            <p style={{ textAlign: 'center', fontSize: '0.7rem', color: '#94a3b8', marginTop: '1.5rem', fontFamily: 'monospace' }}>
+                                UID: {warranty.id}
+                            </p>
                         </div>
                     ))}
                 </div>
