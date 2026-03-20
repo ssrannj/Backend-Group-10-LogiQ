@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductRepository productRepository;
+    private final com.logiq.backend.service.WarrantyService warrantyService;
 
     @GetMapping
     public ResponseEntity<Page<Product>> getProducts(
@@ -25,5 +26,14 @@ public class ProductController {
     ) {
         Page<Product> products = productRepository.findByCategoryAndSearch(category, search, PageRequest.of(page, size));
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/{id}/warranty-check")
+    public ResponseEntity<com.logiq.backend.dto.WarrantyInfoResponse> getWarrantyStatus(
+            @PathVariable Long id,
+            @RequestParam String purchaseDate) {
+        
+        java.time.LocalDate date = java.time.LocalDate.parse(purchaseDate);
+        return ResponseEntity.ok(warrantyService.calculateWarranty(id, date));
     }
 }
