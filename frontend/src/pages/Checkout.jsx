@@ -26,6 +26,20 @@ const Checkout = () => {
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         if (selectedFile) {
+            // Validation: Max 10MB
+            if (selectedFile.size > 10 * 1024 * 1024) {
+                setErrorMessage('File is too large. Maximum size is 10MB.');
+                setFile(null);
+                return;
+            }
+            // Validation: Types
+            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+            if (!allowedTypes.includes(selectedFile.type)) {
+                setErrorMessage('Invalid file type. Please upload a PDF, JPG, or PNG.');
+                setFile(null);
+                return;
+            }
+            
             setFile(selectedFile);
             setErrorMessage('');
         }
@@ -57,29 +71,35 @@ const Checkout = () => {
     if (status === 'success') {
         return (
             <div className="auth-container">
-                <div className="auth-card text-center card-hover" style={{ maxWidth: '32rem', padding: '3rem' }}>
-                    <div className="gradient-bg" style={{
-                        width: '80px',
-                        height: '80px',
+                <div className="auth-card text-center card-hover" style={{ maxWidth: '36rem', padding: '4rem', animation: 'scaleUp 0.4s ease-out' }}>
+                    <div style={{
+                        width: '100px',
+                        height: '100px',
                         borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        margin: '0 auto 1.5rem',
-                        boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.3)'
+                        margin: '0 auto 2rem',
+                        boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.4)'
                     }}>
-                        <CheckCircle size={40} color="white" />
+                        <CheckCircle size={50} color="white" />
                     </div>
-                    <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem', color: 'var(--text-main)' }}>Payment Submitted!</h2>
-                    <p className="text-muted" style={{ marginBottom: '2.5rem', fontSize: '1.1rem' }}>
-                        Your payment slip has been uploaded successfully for Order <strong>#{orderData.id}</strong>.
-                        Verification usually takes less than 24 hours.
+                    <h2 style={{ fontSize: '2.25rem', fontWeight: 'bold', marginBottom: '1.25rem', color: 'var(--text-main)', letterSpacing: '-0.025em' }}>Payment Receipt Uploaded!</h2>
+                    <p className="text-muted" style={{ marginBottom: '2.5rem', fontSize: '1.15rem', lineHeight: '1.6' }}>
+                        We've received your payment proof for Order <strong>#{orderData.id}</strong>. 
+                        Our team will verify the bank transfer shortly. You will be notified once your order moves to processing.
                     </p>
-                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                        <Link to="/customer/tracking" className="btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', textDecoration: 'none' }}>
-                            Track Order
+                    <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '1rem', marginBottom: '2.5rem', border: '1px solid #e2e8f0' }}>
+                        <p style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: '500' }}>
+                            <Info size={16} className="inline-block mr-1 mt-[-2px]" /> Verification Status: <strong>Pending (24h)</strong>
+                        </p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center' }}>
+                        <Link to="/customer/tracking" className="btn-primary" style={{ width: 'auto', padding: '1rem 2.5rem', textDecoration: 'none', boxShadow: '0 10px 15px -3px rgba(59, 130, 246, 0.4)' }}>
+                            Track Order Activity
                         </Link>
-                        <Link to="/customer/dashboard" className="btn-secondary" style={{ width: 'auto', padding: '0.75rem 2rem', textDecoration: 'none' }}>
+                        <Link to="/customer/dashboard" className="btn-secondary" style={{ width: 'auto', padding: '1rem 2.5rem', textDecoration: 'none' }}>
                             Return to Dashboard
                         </Link>
                     </div>
