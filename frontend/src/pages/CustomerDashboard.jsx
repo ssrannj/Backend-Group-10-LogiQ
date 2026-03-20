@@ -62,9 +62,17 @@ const CustomerDashboard = () => {
                     </div>
                 </div>
                 
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
-                    <p className="text-muted">No active orders found in the last 30 days.</p>
-                    <button className="btn-secondary mt-4" style={{ width: 'auto' }}>View Order History</button>
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem', display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem' }}>
+                    <div style={{ padding: '1rem', backgroundColor: '#f0f9ff', borderRadius: '0.75rem', border: '1px solid #e0f2fe' }}>
+                        <p style={{ fontSize: '0.75rem', color: '#0369a1', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Active Shipment</p>
+                        <p style={{ fontWeight: 'bold' }}>ORD-5542</p>
+                        <p className="text-muted" style={{ fontSize: '0.875rem' }}>Status: <span style={{ color: 'var(--primary)', fontWeight: '600' }}>In Transit</span></p>
+                        <Link to="/customer/tracking/ORD-5542" className="link" style={{ fontSize: '0.85rem', display: 'block', marginTop: '0.5rem' }}>View Timeline →</Link>
+                    </div>
+                    <div>
+                        <p className="text-muted">No other active orders found in the last 30 days.</p>
+                        <button className="btn-secondary mt-4" style={{ width: 'auto' }}>View Order History</button>
+                    </div>
                 </div>
             </div>
         </div>
