@@ -52,7 +52,10 @@ public class CheckoutController {
 
             // Generate unique filename
             String originalFileName = file.getOriginalFilename();
-            String extension = originalFileName != null ? originalFileName.substring(originalFileName.lastIndexOf(".")) : "";
+            String extension = "";
+            if (originalFileName != null && originalFileName.contains(".")) {
+                extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
             String uniqueFileName = UUID.randomUUID().toString() + extension;
             
             Path targetPath = root.resolve(uniqueFileName);

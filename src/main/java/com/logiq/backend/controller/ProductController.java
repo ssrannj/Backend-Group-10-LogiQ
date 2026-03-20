@@ -3,6 +3,8 @@ package com.logiq.backend.controller;
 import com.logiq.backend.model.Category;
 import com.logiq.backend.model.Product;
 import com.logiq.backend.repository.ProductRepository;
+import com.logiq.backend.service.WarrantyService;
+import com.logiq.backend.dto.WarrantyInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductRepository productRepository;
-    private final com.logiq.backend.service.WarrantyService warrantyService;
+    private final WarrantyService warrantyService;
 
     @GetMapping
     public ResponseEntity<Page<Product>> getProducts(
@@ -29,7 +31,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/warranty-check")
-    public ResponseEntity<com.logiq.backend.dto.WarrantyInfoResponse> getWarrantyStatus(
+    public ResponseEntity<WarrantyInfoResponse> getWarrantyStatus(
             @PathVariable Long id,
             @RequestParam String purchaseDate) {
         
