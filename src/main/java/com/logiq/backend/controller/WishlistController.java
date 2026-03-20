@@ -13,14 +13,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/wishlist")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class WishlistController {
 
     private final WishlistService wishlistService;
     private final UserRepository userRepository;
 
     private User getCurrentUser() {
-        return userRepository.findAll().stream().findFirst().orElse(null);
+        // Return a stable mock user for Sprint 2 shell context
+        return userRepository.findByEmail("customer@example.com");
     }
 
     @GetMapping("/my")

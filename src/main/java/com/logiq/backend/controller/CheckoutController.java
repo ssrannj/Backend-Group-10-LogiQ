@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/orders/checkout")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class CheckoutController {
 
     private final OrderPaymentRepository orderPaymentRepository;

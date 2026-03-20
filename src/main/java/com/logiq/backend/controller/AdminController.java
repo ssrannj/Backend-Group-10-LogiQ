@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/orders")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class AdminController {
 
     private final OrderPaymentRepository orderPaymentRepository;
@@ -48,7 +48,7 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/reject-payment")
-    public ResponseEntity<?> rejectPayment(@PathVariable Long id, @RequestBody String reason) {
+    public ResponseEntity<?> rejectPayment(@PathVariable Long id, @RequestParam(required = false, defaultValue = "Manual payment validation failed.") String reason) {
         OrderPayment payment = orderPaymentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment record not found"));
         
