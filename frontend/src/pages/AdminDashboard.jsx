@@ -15,23 +15,25 @@ const AdminDashboard = () => {
     });
     const [loading, setLoading] = useState(true);
 
+    const fetchStats = async () => {
+        setLoading(true);
+        try {
+            const data = await adminService.getSystemStats();
+            setStats(data);
+        } catch (err) {
+            // Use fallback mock stats if backend isn't ready
+            setStats({
+                pendingPayments: 5,
+                totalOrders: 28,
+                activeCustomers: 12,
+                revenue: 14500
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const data = await adminService.getSystemStats();
-                setStats(data);
-            } catch (err) {
-                // Use fallback mock stats if backend isn't ready
-                setStats({
-                    pendingPayments: 5,
-                    totalOrders: 28,
-                    activeCustomers: 12,
-                    revenue: 14500
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchStats();
     }, []);
 

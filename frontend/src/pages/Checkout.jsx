@@ -76,8 +76,11 @@ const Checkout = () => {
                         Verification usually takes less than 24 hours.
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                        <Link to="/customer/dashboard" className="btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', textDecoration: 'none' }}>
-                            View Dashboard
+                        <Link to="/customer/tracking" className="btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', textDecoration: 'none' }}>
+                            Track Order
+                        </Link>
+                        <Link to="/customer/dashboard" className="btn-secondary" style={{ width: 'auto', padding: '0.75rem 2rem', textDecoration: 'none' }}>
+                            Return to Dashboard
                         </Link>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import { Heart } from 'lucide-react';
+import { Heart, Truck, ShieldCheck } from 'lucide-react';
 
 const CustomerDashboard = () => {
     const { user, logout } = useAuth();
@@ -46,10 +46,26 @@ const CustomerDashboard = () => {
                 </div>
             </div>
 
-            <div className="auth-card" style={{ maxWidth: '100%', backgroundColor: '#f9fafb' }}>
-                <h3>Your Recent Orders</h3>
-                <p className="text-muted mt-4">No active orders found.</p>
-                <button className="btn-primary mt-6" style={{ width: 'auto' }}>Browse History</button>
+            <div className="auth-card" style={{ maxWidth: '100%', backgroundColor: '#f9fafb', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Your Orders & Protection</h3>
+                        <p className="text-muted">Track shipments and manage warranties</p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <Link to="/customer/tracking" className="btn-primary" style={{ width: 'auto', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Truck size={18} /> Track Order
+                        </Link>
+                        <Link to="/customer/warranties" className="btn-secondary" style={{ width: 'auto', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <ShieldCheck size={18} /> My Warranties
+                        </Link>
+                    </div>
+                </div>
+                
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                    <p className="text-muted">No active orders found in the last 30 days.</p>
+                    <button className="btn-secondary mt-4" style={{ width: 'auto' }}>View Order History</button>
+                </div>
             </div>
         </div>
     );
