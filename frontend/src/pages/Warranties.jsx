@@ -71,10 +71,10 @@ const Warranties = () => {
                                 </div>
                             </div>
 
-                            <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: isExpired(warranty.status) ? '#fef2f2' : '#f8fafc', borderRadius: '0.5rem', border: `1px solid ${isExpired(warranty.status) ? '#fee2e2' : '#f1f5f9'}` }}>
-                                <p style={{ fontSize: '0.75rem', color: isExpired(warranty.status) ? '#ef4444' : '#64748b', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: isExpired(warranty.status) ? '#fff1f2' : '#f0f9ff', borderRadius: '0.5rem', border: `1px solid ${isExpired(warranty.status) ? '#fecaca' : '#e0f2fe'}` }}>
+                                <p style={{ fontSize: '0.8rem', color: isExpired(warranty.status) ? '#e11d48' : '#0369a1', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500' }}>
                                     <AlertCircle size={14} />
-                                    {isExpired(warranty.status) ? 'This warranty has expired and is no longer active.' : 'Maintenance covered under LogiQ Standard Plan.'}
+                                    {isExpired(warranty.status) ? 'This warranty policy has expired. Click "Extend" to continue protection.' : 'Standard LogiQ coverage is fully active for all structural components.'}
                                 </p>
                             </div>
 
