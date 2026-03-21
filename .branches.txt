@@ -1,0 +1,4 @@
+﻿  develop                             d755d8f [origin/develop] Merge branch 'Akkil-Database' of https://github.com/ssrannj/Backend-Group-10-LogiQ
+* feature/backend-shell-catalog-start 23d6d49 [origin/feature/backend-shell-catalog-start] test: verify network graph attribution for ssrannj
+  feature/catalog-foundation          5335a41 feat: add product card and filter component scaffolding
+  main                                d755d8f [origin/main] Merge branch 'Akkil-Database' of https://github.com/ssrannj/Backend-Group-10-LogiQ
