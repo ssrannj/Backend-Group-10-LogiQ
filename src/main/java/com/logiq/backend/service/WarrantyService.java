@@ -27,7 +27,7 @@ public class WarrantyService {
         }
 
         LocalDate expiryDate = purchaseDate.plusMonths(period);
-        boolean active = LocalDate.now().isBefore(expiryDate);
+        boolean active = !LocalDate.now().isAfter(expiryDate);
 
         return WarrantyInfoResponse.builder()
                 .productId(productId)

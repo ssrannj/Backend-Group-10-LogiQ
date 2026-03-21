@@ -20,6 +20,8 @@ public class OrderPayment {
     private Long id;
 
     private Long orderId;
+    private Long productId;
+    private java.math.BigDecimal amount;
 
     private String fileName;
     
