@@ -8,8 +8,8 @@ export const adminService = {
         } catch (error) {
             // Fallback for mock demo
             return [
-                { id: 'ORD-1011', customer: 'John Doe', total: 899, slip: 'available' },
-                { id: 'ORD-5542', customer: 'Alice Smith', total: 1200, slip: 'available' }
+                { id: '1011', customerName: 'John Doe', amount: 899, slip: 'available', priorityScore: 45 },
+                { id: '5542', customerName: 'Alice Smith', amount: 1200, slip: 'available', priorityScore: 22 }
             ];
         }
     },

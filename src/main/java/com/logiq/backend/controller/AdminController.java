@@ -24,6 +24,7 @@ public class AdminController {
     private final OrderPaymentRepository orderPaymentRepository;
     private final ProductRepository productRepository;
     private final EmailService emailService;
+    private final com.logiq.backend.service.PriorityScoreService priorityScoreService;
 
     @GetMapping("/verifying")
     public ResponseEntity<List<OrderAdminResponse>> getVerifyingOrders() {
@@ -36,6 +37,12 @@ public class AdminController {
                                 .map(Product::getName)
                                 .orElse("Unknown Product");
                     }
+                    int daysUntilDeadline = 7; // Fixed deadline for verifying status
+                    boolean isUrgent = p.getAmount() != null && p.getAmount().doubleValue() > 1000;
+                    int orderAgeDays = Math.max(0, (int) java.time.Duration.between(p.getUploadTime(), LocalDateTime.now()).toDays());
+                    
+                    int score = priorityScoreService.calculatePriorityScore(daysUntilDeadline, isUrgent, orderAgeDays);
+
                     return OrderAdminResponse.builder()
                             .id(p.getId())
                             .orderId(p.getOrderId())
@@ -46,8 +53,11 @@ public class AdminController {
                             .fileType(p.getFileType())
                             .status(p.getStatus())
                             .uploadTime(p.getUploadTime())
+                            .priorityScore(score)
+                            .customerName("customer@example.com") 
                             .build();
                 })
+                .sorted((a, b) -> Integer.compare(b.getPriorityScore(), a.getPriorityScore())) // Sort by highest priority first
                 .toList();
         return ResponseEntity.ok(response);
     }

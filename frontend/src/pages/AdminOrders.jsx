@@ -152,6 +152,7 @@ const AdminOrders = () => {
                                     <th style={{ padding: '1.75rem 2rem', fontWeight: '900', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Vector ID</th>
                                     <th style={{ padding: '1.75rem 2rem', fontWeight: '900', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Client Manifest</th>
                                     <th style={{ padding: '1.75rem 2rem', fontWeight: '900', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Net Settlement</th>
+                                    <th style={{ padding: '1.75rem 2rem', fontWeight: '900', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Criticality</th>
                                     <th style={{ padding: '1.75rem 2rem', fontWeight: '900', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Proof Artifacts</th>
                                     <th style={{ padding: '1.75rem 2rem', fontWeight: '900', fontSize: '0.8rem', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.15em', textAlign: 'right' }}>Authorization</th>
                                 </tr>
@@ -163,7 +164,7 @@ const AdminOrders = () => {
                                             <span style={{ fontWeight: '900', color: 'var(--primary)', fontFamily: '"Courier New", monospace', fontSize: '1.1rem', backgroundColor: 'var(--primary-light)', padding: '0.4rem 0.8rem', borderRadius: '0.5rem' }}>{order.id}</span>
                                         </td>
                                         <td style={{ padding: '1.5rem 2rem' }}>
-                                            <div style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '1.15rem', marginBottom: '0.2rem' }}>{order.customer}</div>
+                                            <div style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '1.15rem', marginBottom: '0.2rem' }}>{order.customerName || 'Anonymous'}</div>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981' }}></div>
                                                 <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Identity Verified</span>
@@ -171,8 +172,20 @@ const AdminOrders = () => {
                                         </td>
                                         <td style={{ padding: '1.5rem 2rem' }}>
                                             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
-                                                <span style={{ fontWeight: '950', fontSize: '1.5rem', color: 'var(--text-main)' }}>${order.total.toLocaleString()}</span>
+                                                <span style={{ fontWeight: '950', fontSize: '1.5rem', color: 'var(--text-main)' }}>${(order.amount || 0).toLocaleString()}</span>
                                                 <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: '800' }}>USD</span>
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: '1.5rem 2rem' }}>
+                                            <div style={{ 
+                                                display: 'inline-flex', alignItems: 'center', gap: '0.5rem', 
+                                                padding: '0.5rem 0.8rem', borderRadius: '0.6rem',
+                                                backgroundColor: (order.priorityScore > 50 ? '#fff1f2' : (order.priorityScore > 20 ? '#fffbeb' : '#f0fdf4')),
+                                                color: (order.priorityScore > 50 ? '#be123c' : (order.priorityScore > 20 ? '#b45309' : '#15803d')),
+                                                border: `1px solid ${(order.priorityScore > 50 ? '#fecdd3' : (order.priorityScore > 20 ? '#fef3c7' : '#dcfce7'))}`
+                                            }}>
+                                                <AlertCircle size={14} />
+                                                <span style={{ fontWeight: '900', fontSize: '0.85rem' }}>{order.priorityScore || 1}</span>
                                             </div>
                                         </td>
                                         <td style={{ padding: '1.5rem 2rem' }}>

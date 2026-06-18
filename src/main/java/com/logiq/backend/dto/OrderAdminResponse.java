@@ -23,4 +23,6 @@ public class OrderAdminResponse {
     private String fileType;
     private PaymentStatus status;
     private LocalDateTime uploadTime;
+    private int priorityScore;
+    private String customerName;
 }
